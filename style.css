@@ -1,0 +1,452 @@
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    overflow: hidden;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+div, img{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* 인터넷익스플로러 */
+    user-select: none;
+    box-sizing: border-box;
+}
+.mainWrap{
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f4;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.mainWrap > div{
+    background-color: #fff3e4;
+    width: 500px;
+    height: 350px;
+    font-size: 50px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 90px;
+    border: 1px solid #ffac4d;
+    cursor: pointer;
+}
+input{
+    height: 35px;
+    border: none;
+    border-bottom: 1px solid #eeeeee;
+    padding-left: 5px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+input.valued{
+    border-bottom: 1px solid #ffac4d;
+}
+input:focus{
+    outline: none;
+    border-bottom: 1px solid #ffac4d ;
+    
+}
+input:hover{
+    border-bottom: 1px solid #ffac4d ;
+}
+.descWrap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: #f3f3f4;
+}
+.descContent{
+    width: 80%;
+    height: 100%;
+    padding: 40px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow: hidden;
+}
+.descTitle{
+    height: 50px;
+}
+.descTextWrap{
+    height: 600px;
+}
+.descTextWrap > div{
+    display: none;
+}
+.descTextWrap > div.pageShow{
+    display: block;
+}
+.colSplit{
+    display: flex;
+}
+.descPage3 img{
+    width: 400px;
+}
+.descPage4 img{
+    width: 380px;
+}
+.prevNextButtonWrap{
+}
+.tutorialButtonWrap{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.tutorialButtonWrap > button{
+    width: 100px;
+}
+.prevNextButtonWrap > button{
+    width: 45px;
+}
+.prevNextButtonWrap > button.first, .prevNextButtonWrap > button.last{
+    background-color: #b9b9b9;
+}
+.tutorialButtonWrap > button, .prevNextButtonWrap > button{
+    padding: 10px;
+    cursor:pointer;
+}
+.prevNextButtonWrap{
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 10px;
+}
+.prevNextButtonWrap > button:nth-child(1){
+    margin-right: 10px;
+}
+.pageSubTitle{
+
+}
+.pageContent{
+    text-indent: -12px;
+    padding-left: 12px;
+    line-height: 32px;
+    word-break: keep-all; 
+}
+.colSplit .pageContent{
+    text-indent: 0px;
+    padding-left: 0px;
+}
+.formWrap{
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    background-color: #f3f3f4;
+}
+.formContent{
+    width: 600px;
+    height: 400px;
+    padding: 50px;
+    background-color: #fff;
+}
+.formContent.first{
+    height: 920px;
+}
+.infoTitleText{
+    padding-bottom: 30px;
+}
+.infoSubTitleText{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.formTitle{
+    margin-bottom: 10px;
+}
+.formcheck{
+    display: flex;
+    margin-bottom: 20px;
+}
+.formcheck > div{
+    display: flex;
+    padding: 10px;
+    border: 1px solid #eeeeee;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.startBtnWrap{
+    width: 100%;
+    text-align: right;
+    margin-top: 20px;
+}
+.startBtnWrap > button{
+    width: 200px;
+    height: 50px;
+    cursor: pointer;
+}
+.yearWrap1, .yearWrap2{
+    display: none;
+}
+.formcheck > div.formcheckChecked{
+    border: 1px solid #ffac4d;
+    background-color: #fff3e4;
+}
+.formcheck > div:hover{
+    border: 1px solid #ffac4d;
+}
+.wrap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.leftWrap{
+    width: 1300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f4;
+    border-right: 2px solid #eeeeee;
+    position: relative;
+}
+.countText{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.countText > h2{
+    text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
+    margin: 0;
+}
+.imageArea{
+    width: 1100px;
+    height: 900px;
+    padding-right: 50px;
+    position: relative;
+}
+.imageArea > img{
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,0.2) 0px 0px 5px 1px;
+}
+.imageArea > img.imgNone{
+    position: absolute;
+    left: -2000px;
+}
+.rightWrap{
+    width: calc(100% - 1300px);
+    padding: 30px;
+}
+.title{
+    width: 100%;
+    border-bottom: 1px solid #eeeeee;
+}
+.title > div{
+    width: 100%;
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 30px;
+    text-align: center;
+}
+.showData{
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
+}
+.showData > div{
+    display: flex;
+    justify-content: center;
+}
+.showData > div > div:nth-child(1){
+    width: 160px;
+}
+.showData > div > div{
+    font-size: 20px;
+    font-weight: bold;
+}
+.data1{
+    margin-bottom: 20px;
+}
+.showGauge{
+    width: 100%;
+    padding-top: 30px;
+    border-bottom: 1px solid #eeeeee;
+}
+.showGauge > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.showGauge > div > div:nth-child(1){
+    width: 100px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.showGauge > div > div:nth-child(2){
+    width: 300px;
+    height: 35px;
+    border: 1px solid #c2c2c2;
+    position: relative;
+}
+.showGauge > div > div:nth-child(2) > div:nth-child(2), .showGauge > div > div:nth-child(2) > div:nth-child(3){
+    position: absolute;
+    font-size: 17px;
+    font-weight: bold;
+    color: #b9b9b9;
+    line-height:33px;
+}
+.showGauge > div > div:nth-child(2) > div:nth-child(1){
+    width:0;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    left:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.showGauge > div > div:nth-child(2) > div:nth-child(1) > div{
+    font-size: 15px;
+    font-weight: bold;
+    color: #303030;
+}
+.showGauge > div > div:nth-child(2) > div:nth-child(2){
+    left: 5px;
+}
+.showGauge > div > div:nth-child(2) > div:nth-child(3){
+    right: 5px;
+}
+.buttonWrap{
+    width: 100%;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
+}
+.buttonWrap > div{
+    display: flex;
+    justify-content: space-around;
+}
+.buttonWrap > div:nth-child(1){
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 30px;
+}
+.buttonWrap > div > div{
+    width: 200px;
+    height: 100px;
+    border: 1px solid #c2c2c2;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.buttonWrap > div > div.selected{
+    background-color: #fff3e4;
+    border-color: #ffac4d;
+}
+.buttonWrap > div > div:hover{
+    border-color: #ffac4d;
+}
+.nextBtnWrap{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.nextBtn{
+    width: 300px;
+    height: 70px;
+    background-color: #ffac4d;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.endWrap{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f4;
+    justify-content: center;
+    align-items: center;
+}
+.endWrap > div{
+    padding: 50px;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,0.1) 0px 0px 3px 1px;
+}
+.wrap-radius{
+    border-radius: 10px;
+}
+.fsize-15{
+    font-size: 15px;
+}
+.fsize-18{
+    font-size: 18px;
+}
+.fsize-20{
+    font-size: 20px;
+}
+.fsize-25{
+    font-size: 25px;
+}
+.fsize-30{
+    font-size: 30px;
+}
+.fsize-40{
+    font-size: 40px;
+}
+.fcolor-fff{
+    color: #fff;
+}
+.fcolor-1E4E79{
+    color: #fff3e4;
+}
+.fweight-bold{
+    font-weight: bold;
+}
+.bcolor-ddd{
+    border: 1px solid #eeeeee;
+}
+.bcolor-1E4E79{
+    border: 1px solid #fff3e4;
+}
+.borderB-ddd{
+    border-bottom: 1px solid #eeeeee;
+}
+.borderT-ddd{
+    border-top: 1px solid #eeeeee;
+}
+.bcolor-none{
+    border: none;
+}
+.wrap-shadow{
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1);
+}
+.back-18b9b9{
+    background-color: #ffac4d;
+}

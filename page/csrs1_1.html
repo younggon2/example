@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="../data1.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <title>ColonoScopy Reader Study 1st_1</title>
+    <script>
+        let randomArray = [];
+        let index = 0;
+        let zoomist1;
+        let zoomist2;
+        let checkDataList = [0,0];
+        var sex = '';
+        var resi = '';
+        var resiyear = '';
+        var startTime = 0;
+        var saveData = {};
+        let imageFlag = true;
+        let descIndex = 1;
+
+        $(document).ready(()=>{
+            self.moveTo(0,0); //창위치
+            self.resizeTo(screen.availWidth, screen.availHeight);
+            addArray();
+            shuffle(randomArray);
+            saveData['info'] = {'name': '', 'age': '', 'sex': '', 'year': '' , 'all': '', 'average': ''};
+            saveData['result'] = {};
+            setDataKey();
+            window.oncontextmenu = function(){
+                return false;
+            }
+            $('input').focusout(function (event) {
+                if($(event.currentTarget).val() !== ''){
+                    $(event.currentTarget).addClass('valued')
+                }
+            })
+            $('.startBtnWrap > button').click(startClick);
+            $(".name").keyup(function (event) {
+                regexp = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+                v = $(this).val();
+                if (regexp.test(v)) {
+                    $(this).val(v.replace(regexp, ''));
+                }
+            });
+            init();
+            
+        });
+
+        const addArray = () =>{
+            for(let i = 0; i < pData.length; i++){
+                randomArray[i] = i;
+            }   
+        }
+        const shuffle = (array) => {
+            array.sort(() => Math.random() - 0.5);
+        }
+        function setDataKey(){
+            for(var i = 0; i<pData.length; i++){
+                var key = pData[i].index;
+                saveData.result[key] = {'value1': null, 'value2': null, 'time': ''};
+            }
+        }
+        const init = () => {
+            setImage();
+            setCount();
+        }
+
+        const setImage = () => {
+            if(index === 0){
+                $('.imageArea').append('<img class="img'+ index +'" src="../img1/pilot_'+ pData[randomArray[index]].img_name +'.jpg" alt="" />');
+                $('.imageArea').append('<img class="img'+ (index+ 1) +'" src="../img1/pilot_'+ pData[randomArray[index + 1]].img_name +'.jpg" alt="" />');
+                $('.imageArea > .img'+(index+1)).addClass('imgNone');
+            }else if(index === pData.length-1){
+                $('.img' + (index-1)).remove();
+            }else{
+                $('.img' + (index-1)).remove();
+                $('.imageArea').append('<img class="img'+ (index+ 1) +'" src="../img1/pilot_'+ pData[randomArray[index + 1]].img_name +'.jpg" alt="" />');
+                $('.imageArea > .img'+(index+1)).addClass('imgNone');
+            }
+            $('.imageArea > .img'+index).removeClass('imgNone');
+        }
+        const setCount = () => {
+            $('.countText > h2').text((index+1) + ' / ' + randomArray.length);
+        }
+
+        const adhpclick = (value) => {
+            $('.adhpButton > div').removeClass('selected');
+            $('.'+value+'Button').addClass('selected');
+            setSaveData('value1', value);
+        }
+        const highlowclick = (value) => {
+            $('.highlowButton > div').removeClass('selected');
+            $('.'+value+'Button').addClass('selected');
+            setSaveData('value2', value);
+        }
+        const nextBtnClick = () => {
+            if(nextValidationCheck()){
+                settingClear();
+                saveData.result[randomArray[index]]['time'] = Date.now();
+                index++;
+                if(index < randomArray.length){
+                    init();
+                }else{
+                    var today = new Date();
+
+                    var year = today.getFullYear();
+                    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                    var day = ('0' + today.getDate()).slice(-2);
+
+                    var dateString = year + '-' + month  + '-' + day;
+
+                    dataDownload(JSON.stringify(saveData), 'result1-1_' + dateString +'_'+ saveData.info.name , 'txt');
+                    $('.endWrap').css('display', 'flex')
+                }
+            }else{
+                alert('진단을 선택해 주세요.')
+            }
+        }
+
+        const setSaveData = (key, value) => {
+            saveData.result[randomArray[index]][key] = value;
+        }
+
+        const nextValidationCheck = () => {
+            return saveData.result[randomArray[index]]['value1'] === null ? false : true && saveData.result[randomArray[index]]['value2'] === null ? false : true;
+        }
+
+        const settingClear = () => {
+            $('.adhpButton > div').removeClass('selected');
+            $('.highlowButton > div').removeClass('selected');
+        }
+
+        function dataDownload(content, fileName, contentType){
+            var a = document.createElement("a");
+            var file = new Blob([content], {type: contentType});
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+
+        const sexClick = (event, value) => {
+            $('.sexCheck > div').removeClass('formcheckChecked');
+            if(value === '남'){
+                $('.maleCheck').addClass('formcheckChecked');
+                saveData.info.sex = '남';
+            }else{
+                $('.femaleCheck').addClass('formcheckChecked');
+                saveData.info.sex = '여';
+            }
+        }
+
+        const infoValidateCheck = () => {
+            if($('.name').val() === ''){
+                alert('이름을 입력해 주세요.');
+                return false;
+            }
+            if($('.ageInput').val().length !== 8){
+                alert('생년월일 8자를 입력해주세요.');
+                return false;
+            }
+            let ageY = Number($('.ageInput').val().slice(0,4));
+            let ageM = Number($('.ageInput').val().slice(4,6));
+            let ageD = Number($('.ageInput').val().slice(6));
+            
+            if(ageY < 1900 || ageY > 2023){
+                alert('생년월일의 연도를 확인해주세요.');
+                return false;
+            }
+            if(ageM < 1 || ageM > 12){
+                alert('생년월일의 월을 확인해주세요.');
+                return false;
+            }
+            if(ageD < 1 || ageD > 31){
+                alert('생년월일의 일을 확인해주세요.');
+                return false;
+            }
+            if(!$('.maleCheck').hasClass('formcheckChecked') && !$('.femaleCheck').hasClass('formcheckChecked')){
+                alert('성별을 선택해 주세요.');
+                return false;
+            }
+            if($('.year').val() === ''){
+                alert('업무 경력 첫번째 질문을 입력해 주세요.');
+                return false;
+            }
+            if($('.all').val() === ''){
+                alert('업무 경력 두번째 질문을 입력해 주세요.');
+                return false;
+            }
+            if($('.average').val() === ''){
+                alert('업무 경력 세번째 질문을 입력해 주세요.');
+                return false;
+            }
+            
+            saveData.info.name = $('.name').val();
+            saveData.info.age = $('.ageInput').val();
+            saveData.info.year = $('.year').val();
+            saveData.info.all = $('.all').val();
+            saveData.info.average = $('.average').val();
+            
+            return true;
+        }
+
+        const startClick = () => {
+            if(infoValidateCheck()){
+                $('.formWrap').hide();
+                $('.wrap').css('display', 'flex');
+                saveData.startTime = Date.now();
+            }
+        }
+
+        const descPrevNext = (value) => {
+            if(value === 'p' && descIndex !== 1){
+                descIndex--;
+                if(descIndex === 1){
+                    $('.prevNextButtonWrap > button:nth-child(1)').addClass('first');
+                }
+                if(descIndex !== 4){
+                    $('.prevNextButtonWrap > button:nth-child(2)').removeClass('last');
+                }
+                $('.tutorialButtonWrap > button').text('SKIP');
+            }else if(value === 'n' && descIndex !== 4){
+                descIndex++;
+                if(descIndex === 4){
+                    $('.prevNextButtonWrap > button:nth-child(2)').addClass('last');
+                    $('.tutorialButtonWrap > button').text('NEXT');
+                }
+                if(descIndex !== 1){
+                    $('.prevNextButtonWrap > button:nth-child(1)').removeClass('first');
+                }
+                
+            }
+            $('.descTextWrap > div').removeClass('pageShow');
+            $('.descPage'+ descIndex).addClass('pageShow');
+        }
+
+        const descSkip = () => {
+            if(descIndex === 4){
+                $('.descWrap').hide();
+                $('.formWrap').css('display', 'flex');
+            }else{
+                if(confirm('튜토리얼을 모두 읽지 않았습니다.\n넘어가시겠습니까?')){
+                    $('.descWrap').hide();
+                    $('.formWrap').css('display', 'flex');
+                }
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="descWrap">
+        <div class="descContent">
+            <div class="descTitle fsize-30 fweight-bold borderB-ddd">
+                XAI (eXplainable AI) Tutorial
+            </div>
+            <div class="descTextWrap">
+                <div class="descPage1 pageShow">
+                    <p class="pageSubTitle fsize-25 fweight-bold">소개</p>
+                    <p class="pageContent fsize-20">
+                        - 광학 진단: 내시경에서의 광학진단은 내시경 결과로 용종의 조직학적 진단을 예측하는 것입니다.
+                        내시경 사진만 보고, 혹은 내시경을 하는 도중에 용종의 병리 결과는 모르는 상태에서 이 용종이 adenoma인지 hyperplastic polyp인지 예측하는 것을 말합니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 여러 전임상 연구들에서 대장용종의 광학진단 인공지능(computer-aided diagnosis, CADx)의 성능은 비교적 높은 정확도를 달성하였으나,
+                        이를 실제 임상에서 CADx를 이용하는 의사들의 광학적 진단의 정확도 향상에 대한 효과는 불확실합니다.
+                        그 이유를 인공지능 추론과정의 블랙박스로 결론 도출 과정에 대한 설명이 부재하며 인공지능 판단에 대한 신뢰도의 불확실성 때문으로 추측하여 기존의 광학적 진단에 더불어 설명가능한 인공지능(CADx-XAI)의 효과를 확인하고자 합니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 대장용종 광학진단에 대한 임상적 설명은 NICE classification에 근거하여 Texture, Vessel, Color 각각이 adenoma에 가까운지 hyperplastic polyp에 가까운지 인공지능으로 분석한 결과를 보여줍니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 대장용종의 광학진단에 대한 인공지능과 설명가능한 인공지능 보조의 효과를 보기 위한 연구로 1) 인공지능 시스템의 보조 전 (endoscopists only), 2) 딥러닝 기반 광학적 진단 CADx 보조 후 (endoscopists with CADx), 3) 설명가능한 인공지능 시스템의 보조 후 (endoscopists with CADx-XAI) 임상의사의 광학적 진단의 변화를 관찰하기 위한 연구입니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 핸드폰이나 아이패드가 아닌 노트북이나 데스크탑의 고화질 화면에서 test 부탁드립니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 중간 저장이 안되기 때문에 중간에 창을 실수로 끄거나 인터넷 연결이 끊기면 백업이 불가한 문제가 있습니다.
+                    </p>
+                </div>
+                <div class="descPage2 ">
+                    <p class="pageSubTitle fsize-25 fweight-bold">진단명 선택과 고확신의 개념</p>
+                    <p class="pageContent fsize-20">
+                        - 테스트의 용종은 NBI 정지이미지로 총 200개의 문항입니다. (100문항씩 2회에 나누어 진행하게 됩니다.)
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - Adenoma와 Hyperplastic polyp 중에 선택하게 됩니다. (Sessile serrated lesion은 없음)
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 대장용종의 광학적 진단에 큰 고민없이 확실하게 Adenoma나 Hyperplastic polyp로 생각하는 경우에는 High confidence를 선택해 주십시오. 진단이 틀릴 가능성이 있다고 생각하는 경우나, 진단이 마음속에서 혼동이 되는 경우에는 low confidence를 선택하면 됩니다.
+                    </p>
+                    <p class="pageContent fsize-20">
+                        - 각 영상을 보신 후 용종의 조직타입 최종 진단에 도달하는 시간이 함께 측정됩니다.
+                    </p>
+                    <br>
+                    <p class="pageSubTitle fsize-25 fweight-bold">다음 문제로 전환</p>
+                    <p class="pageContent fsize-20">
+                        - 진단명을 클릭 후 NEXT 버튼을 누르면 다음문제로 이동됩니다.
+                    </p>
+                    <br>
+                    <p class="pageSubTitle fsize-25 fweight-bold">Colonoscopy Reader Study 1st</p>
+                    <p class="pageContent fsize-20">
+                        인공지능의 도움 없이 문제에 대한 정답을 선택하면 됩니다.
+                    </p>
+                </div>
+                <div class="descPage3 ">
+                    <div class="colSplit">
+                        <div class="col1">
+                            <p class="pageSubTitle fsize-25 fweight-bold">Colonoscopy Reader Study 2nd</p>
+                            <p class="pageContent fsize-20">
+                                1st test 이후 2주 이상 이후에 시행할 예정이며 인공지능이 판단한 광학 진단과 확신도가 선택지 윗부분에 나타나게 됩니다. 확신도는 0과 1 사이의 값으로 표시되며 1에 가까울수록 인공지능의 확신이 100%에 가깝다는 뜻입니다 (예를 들어 AI prediction이 HP 0.001인 경우, AD보다는 HP로 생각되지만, 확신도는 크지 않음을 의미합니다.).<br>
+                                이를 참고하여 정답을 선택하면 됩니다. 인공지능의 판단을 받아들일지 받아들이지 않을지는 내시경 의사의 선택입니다.
+                            </p>
+                        </div>
+                        <div class="col2">
+                            <img src="../descImg/test2.png" alt="test2">
+                        </div>
+                    </div>
+                </div>
+                <div class="descPage4 ">
+                    <div class="colSplit">
+                        <div class="col1">
+                            <p class="pageSubTitle fsize-25 fweight-bold">Colonoscopy Reader Study 3rd</p>
+                            <p class="pageContent fsize-20">
+                                2nd test 이후 2주 이상 이후에 시행할 예정이며 인공지능이 판단한 광학 진단과 확신도가 선택지 윗부분에 나타나게 됩니다. NICE classification에 근거하여 Texture, Vessel, Color 각각이 adenoma에 가까운지 hyperplastic polyp에 가까운지 인공지능으로 분석한 결과를 보여줍니다. 이를 참고하여 정답을 선택하면 됩니다. 인공지능의 판단을 받아들일지 받아들이지 않을지는 내시경 의사의 선택입니다.
+                            </p>
+                        </div>
+                        <div class="col2">
+                            <img src="../descImg/test3.png" alt="test2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prevNextButtonWrap borderB-ddd">
+                <button class="bcolor-none back-18b9b9 fcolor-fff fsize-20 fweight-bold first" onclick="descPrevNext('p')">&lt;</button>
+                <button class="bcolor-none back-18b9b9 fcolor-fff fsize-20 fweight-bold" onclick="descPrevNext('n')">&gt;</button>
+            </div>
+            <div class="tutorialButtonWrap">
+                <button class="bcolor-none back-18b9b9 fcolor-fff fsize-20 fweight-bold" onclick="descSkip()">SKIP</button>
+            </div>
+        </div>
+    </div>
+    <div class="formWrap">
+        <div class="formContent first">
+            <div class="infoTitleText fsize-30 fweight-bold borderB-ddd">ColonoScopy Reader Study 1st_1</div>
+            <div class="infoSubTitleText fsize-25 fweight-bold">검사자 정보</div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">이름</div>
+                <input type="text" class="name" placeholder="홍길동">
+            </div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">생년월일</div>
+                <input type="text" value="" maxlength="8" placeholder="20000101" class="ageInput" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+            </div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">성별</div>
+                <div class="formcheck sexCheck">
+                    <div class="maleCheck" onclick="sexClick(event, '남')">남</div>
+                    <div class="femaleCheck" onclick="sexClick(event, '여')">여</div>
+                </div>
+            </div>
+            <div class="infoSubTitleText fsize-25 fweight-bold">업무 경력</div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">전임의 기간 포함 몇 년 동안 대장내시경을 하였습니까?</div>
+                <input type="number" class="year" placeholder=""><span class="fsize-18 fweight-bold">년</span>
+            </div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">전임의 기간 포함 대략 몇 건의 대장내시경을 하였습니까?</div>
+                <input type="number" class="all" placeholder=""><span class="fsize-18 fweight-bold">건</span>
+            </div>
+            <div class="formRow">
+                <div class="formTitle fsize-18 fweight-bold">최근 1년 동안 일주일에 평균 몇 건의 대장내시경을 하였습니까?</div>
+                <input type="number" class="average" placeholder=""><span class="fsize-18 fweight-bold">건</span>
+            </div>
+            <div class="startBtnWrap">
+                <button class="bcolor-none back-18b9b9 fcolor-fff fsize-18 fweight-bold">검사 시작</button>
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="leftWrap">
+            <div class="countText">
+                <h2></h2>
+            </div>
+            <div class="imageArea">
+            </div>
+        </div>
+        <div class="rightWrap">
+            <div class="title">
+                <div class="titleText1">ColonoScopy Reader Study 1st_1</div>
+            </div>
+            <div class="buttonWrap">
+                <div class="adhpButton">
+                    <div class="adButton" onclick="adhpclick('ad')">AD</div>
+                    <div class="hpButton" onclick="adhpclick('hp')">HP</div>
+                </div>
+                <div class="highlowButton">
+                    <div class="highButton" onclick="highlowclick('high')">High<br/>Confidence</div>
+                    <div class="lowButton" onclick="highlowclick('low')">Low<br/>Confidence</div>
+                </div>
+            </div>
+            <div class="nextBtnWrap">
+                <div class="nextBtn" onclick="nextBtnClick()">NEXT</div>
+            </div>
+        </div>
+    </div>
+    <div class="endWrap">
+        <div>검사가 완료 되었습니다.</div>
+    </div>
+</body>
+</html>
