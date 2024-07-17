@@ -37,6 +37,7 @@
                 }
             })
             $('.startBtnWrap > button').click(startClick);
+            $('.alertBtn').click(alertClick);
             $(".name").keyup(function (event) {
                 regexp = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
                 v = $(this).val();
@@ -83,6 +84,9 @@
         }
         const setCount = () => {
             $('.countText > h2').text((index+1) + ' / ' + randomArray.length);
+        }
+        const alertClick = () => {
+            $('.alertWrap').css('display', 'none');
         }
 
         const adhpclick = (value) => {
@@ -207,6 +211,7 @@
                 $('.formWrap').hide();
                 $('.wrap').css('display', 'flex');
                 saveData.startTime = Date.now();
+                $('.imageArea').css('left', '0px');
             }
         }
 
