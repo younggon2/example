@@ -490,7 +490,7 @@ input:hover{
     background-color: #ffac4d;
 }
 
-@media (max-width: 1858px) {
+@media (max-width: 1850px) {
     .leftWrap {
         width: calc(100% - 600px);
         min-height: 700px;
